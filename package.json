@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "start-watch": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
