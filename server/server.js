@@ -20,8 +20,8 @@ var io = socketio.listen(server);
 
 io.on('connection', (socket) => {
   console.log('Client Connection Success');
-  socket.on('draw', () => {
-    console.log('Collect Draw');
+  socket.on('draw', (data) => {
+    io.emit('share', data);
   })
 })
 
