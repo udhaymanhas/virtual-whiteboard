@@ -22,8 +22,10 @@ io.on('connection', (socket) => {
   console.log('Client Connection Success');
   socket.on('draw', (data) => {
     io.emit('share', data);
+    // socket.broadcast.emit('share', data);
   })
 })
+
 
 server.listen(PORT, () => {
   console.log('Server is up at: ',PORT );
