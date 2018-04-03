@@ -16,7 +16,6 @@ var draw = canvas.getContext("2d");
 var width = canvas.width;
 var height = canvas.height;
 
-
 var cursor = {
   hold: false,
   move: false,
@@ -45,7 +44,7 @@ canvas.onmousedown = function(e){
           updateCanvas([ cursor.cur_pos, cursor.prev_pos ]);
           socket.emit('draw', {
             name: name,
-            active:true,
+            active: true,
             points: [ cursor.cur_pos, cursor.prev_pos ]
           });
           cursor.move = false;
@@ -84,11 +83,11 @@ canvas.onmouseup = function(e){
 
   socket.emit('draw', {
     name: name,
-    active:false
+    active: false
   });
-    canvas.onmousemove = function(e){
-      //do nothing
-    };
+  canvas.onmousemove = function(e){
+    //do nothing
+  };
 };
 
 socket.on('connect',function(){
@@ -150,13 +149,15 @@ socket.on('share', function (data) {
   }
   else
   if(data.active == false){
-    // remove name addElement
+    // remove name Element
     users.splice(users.indexOf(data.name),1);
     $("#"+data.name).remove();
   }
 
 });
 
-
-
-console.log(draw);
+socket.on('history', function (points) {
+  console.log('History event');
+  if(points.length == 2)
+    updateCanvas(points);
+});
