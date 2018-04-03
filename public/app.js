@@ -1,11 +1,22 @@
+$(document).ready(function(){
+    $(this).scrollTop(0);
+});
+
+var initial = {
+  scrollX:window.scrollX,
+  scrollY:window.scrollY
+}
+
 var canvas = document.getElementById("canvas");
 var socket = io.connect();
 var canvasBound = canvas.getBoundingClientRect();
 
 var draw = canvas.getContext("2d");
 
-var width = 300;
-var height = 300;
+var width = canvas.width;
+var height = canvas.height;
+
+
 var cursor = {
   hold: false,
   move: false,
@@ -23,8 +34,9 @@ function setName(){
 canvas.onmousedown = function(e){
   cursor.hold = true;
   canvas.onmousemove = function(e){
-    cursor.cur_pos.x = (e.clientX-canvasBound.left) / width;
-    cursor.cur_pos.y = (e.clientY-canvasBound.top) / height;
+    cursor.cur_pos.x = (e.clientX-canvasBound.left+window.scrollX-initial.scrollX) / width;
+    cursor.cur_pos.y = (e.clientY-canvasBound.top+window.scrollY-initial.scrollY) / height;
+
     cursor.move = true;
 
     function collectPoints(){
@@ -109,6 +121,16 @@ function updateCanvas(points){
   draw.stroke();
 }
 
+
+var scrollOffset = {
+  x:0,
+  y:0
+}
+if(initial.scrollX > 0 || initial.scrollY > 0){
+  scrollOffset.y =  initial.scrollY
+  scrollOffset.x =  initial.scrollX
+}
+
 socket.on('share', function (data) {
   var points = data.points;
   if(data.active == true){
@@ -119,8 +141,9 @@ socket.on('share', function (data) {
     }
     else{
       //user present and active
-      $('#'+data.name).css({top: points[0].y* height, left: points[0].x* width})
-
+      var top = (points[0].y*height) + canvasBound.top + scrollOffset.y;
+      var left = (points[0].x*width) + canvasBound.left + scrollOffset.x;
+      $('#'+data.name).css({top: top, left: left})
     }
     updateCanvas(data.points);
 
@@ -132,19 +155,6 @@ socket.on('share', function (data) {
     $("#"+data.name).remove();
   }
 
-  // if($('#'+data.name).length == 0){
-  //   drawElement(data.name, points)
-  //   console.log('Drawing element');
-  // }
-  // else
-  // if($('#'+data.name).length == 1){
-  //   $('#'+data.name).css({top: points[0].y* height, left: points[0].x* width})
-  // }
-  // draw.beginPath();
-  // draw.lineWidth = 1;
-  // draw.moveTo(points[0].x * width , points[0].y * height );
-  // draw.lineTo(points[1].x * width, points[1].y * height);
-  // draw.stroke();
 });
 
 
