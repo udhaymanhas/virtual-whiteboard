@@ -17,12 +17,16 @@ app.get('*', function (req, res) {
 
 var server = http.createServer(app);
 var io = socketio.listen(server);
-
+var clients = [];
 io.on('connection', (socket) => {
+  clients.push(socket);
   console.log('Client Connection Success');
   socket.on('draw', (data) => {
-    io.emit('share', data);
-    // socket.broadcast.emit('share', data);
+    // io.emit('share', data);
+    if(data.name.length == 0){
+      data.name = 'user'+clients.indexOf(socket);
+    }
+    socket.broadcast.emit('share', data);
   })
 })
 
