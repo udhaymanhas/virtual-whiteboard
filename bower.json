@@ -1,0 +1,21 @@
+{
+  "name": "virtual-whiteboard",
+  "description": "\"# virtual-whiteboard\"",
+  "main": "server.js",
+  "authors": [
+    "Udhay"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/udhaymanhas/virtual-whiteboard",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
