@@ -95,6 +95,11 @@ function reset(){
   canvas.onmousemove = function(e){};
 }
 
+function emptyCanvas(){
+  draw.clearRect(0, 0, canvas.width, canvas.height);
+  socket.emit('resetCanvas');
+}
+
 socket.on('connect',function(e){
   console.log('connected to server...');
 })
@@ -145,3 +150,7 @@ socket.on('history', function (line) {
     updateCanvas(line);
   }
 });
+
+socket.on('clearCanvas', function(){
+  draw.clearRect(0, 0, canvas.width, canvas.height);
+})

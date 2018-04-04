@@ -50,6 +50,11 @@ io.on('connect', (socket) => {
     }
   });
 
+  socket.on('resetCanvas', () => {
+    canvasHistory = {};
+    socket.broadcast.emit('clearCanvas');
+  });
+
   socket.on('disconnect', (socket) => {
     clients.splice(clients.indexOf(socket),1);
     if(clients.length == 0){

@@ -17,10 +17,14 @@
   </head>
   <body>
     <!--Angular scope start -->
-    <div ng-app="whiteboard" ng-controller="settingsController">
+    <div ng-cloak ng-app="whiteboard" ng-controller="settingsController">
       <md-toolbar class="md-whiteframe-2dp">
         <div class="md-toolbar-tools content reset">
           <span class='special-text' >Virtual Whiteboard</span>
+          <span flex></span>
+          <md-button class="grey md-raised" onclick="emptyCanvas()">
+            Reset Canvas
+          </md-button>
           <span flex></span>
           <md-radio-group ng-model="color" ng-init="color='#000000'" ng-change="setColor()" layout="row">
             <md-radio-button value="#d32f2f"><span style="color:#d32f2f">Red</span></md-radio-button>
@@ -43,11 +47,12 @@
           </md-input-container>
         </div>
       </md-toolbar>
+
+      <div id="display">
+        <canvas id="canvas" width="800" height="580" style="border:1px solid #212121;border-radius:3px;cursor:crosshair"></canvas>
+      </div>
     </div>
     <!--Angular scope end -->
-    <div id="display" >
-      <canvas id="canvas" width="800" height="600" style="border:1px solid #212121;border-radius:3px;cursor:crosshair"></canvas>
-    </div>
     <script src="./canvas.js"></script>
     <script src="./app.js"></script>
     <script src="./controllers/app.controller.js"></script>

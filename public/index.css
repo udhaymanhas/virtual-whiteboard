@@ -19,3 +19,8 @@ md-input-container label {
 md-input-container .md-input {
   color: #ffffff;
 }
+
+.grey {
+    color: rgb(33,33,33);
+    background-color: #616161 !important;
+}
