@@ -45,26 +45,25 @@ function addElement(socketId, name, points){
   $("#display").append(div)
 }
 
-function updateCanvas(points, color){
+function updateCanvas(points){
   draw.beginPath();
   draw.lineWidth = 1;
   draw.lineJoin = 'round';
   draw.lineCap = 'round';
   draw.moveTo(points[0].x * width , points[0].y * height );
   draw.lineTo(points[1].x * width, points[1].y * height);
-  draw.strokeStyle = color;
+  draw.strokeStyle = points[2];
   draw.stroke();
 }
 
 function collectPoints(cursor, color){
   if (cursor.hold && cursor.move && cursor.prev_pos) {
     if(cursor.prev_pos.x != 0 && cursor.prev_pos.y != 0){
-      updateCanvas([ cursor.cur_pos, cursor.prev_pos ], color);
+      updateCanvas([ cursor.cur_pos, cursor.prev_pos, color ]);
       socket.emit('draw', {
         name: name,
         active: true,
-        color: color,
-        points: [ cursor.cur_pos, cursor.prev_pos ]
+        points: [ cursor.cur_pos, cursor.prev_pos, color ]
       });
       cursor.move = false;
     }
@@ -123,7 +122,7 @@ socket.on('share', function (data) {
       var left = (points[0].x*width) + canvasBound.left + scrollOffset.x;
       $('#'+socket.id).css({top: top, left: left})
     }
-    updateCanvas(data.points, data.color);
+    updateCanvas(data.points);
   }
   else
   if(data.active == false){
@@ -133,8 +132,8 @@ socket.on('share', function (data) {
   }
 });
 
-socket.on('history', function (data) {
-  if(data.line.length == 2){
-    updateCanvas(data.line, data.color);
+socket.on('history', function (line) {
+  if(line.length == 3){
+    updateCanvas(line);
   }
 });
