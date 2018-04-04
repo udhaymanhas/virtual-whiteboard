@@ -1,3 +1,18 @@
+/*******canvas.js
+* cursor             -> stores the cursor data to identify actions/movements on cursor
+* initial            -> hold the onload screen data, used to scale drawings
+* scrollOffset       -> hold the onload screen data or default 0, used to fix usernames correctly
+** addElement()           -> adds the user name to html
+** updateCanvas()         -> updates the canvas with data points
+** collectPoints()        -> collects two points to draw a line
+** reset()                -> resets state to original
+** canvas.onmousedown     -> passes points from mouse event to collectPoints()
+** canvas.onmouseleave    -> fires reset() on mouse out of canvas
+** canvas.onmouseup       -> fires reset() when cursor stops drawing
+** socket.on('share'...   -> shares your drawing with server
+** socket.on('history'... -> Updates drawing to current if a user joins late
+*/
+
 $(document).ready(function(){
     $(this).scrollTop(0);
 });
@@ -24,11 +39,6 @@ var cursor = {
 if(initial.scrollX > 0 || initial.scrollY > 0){
   scrollOffset.y =  initial.scrollY
   scrollOffset.x =  initial.scrollX
-}
-
-function setName(){
-  name = $('#name').val();
-  $('#name').val('')
 }
 
 function addElement(socketId, name, points){

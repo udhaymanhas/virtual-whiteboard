@@ -1,3 +1,13 @@
+/*******server.js
+* clients[]             -> stores active clients socket id
+* canvasHistory         -> hold client history as key(socketId):value(history[])
+** io.on('connect',...  -> on client connection updates clients[] and initializes empty history
+** Object.keys(canvasHistory) -> updates late joining client with other clients drawing
+** socket.on('draw',..        -> when any clients starts or stops drawing
+** socket.on('disconnect',..  -> on client disconnection, we update clients[], if clients=0, reset history
+** socket.broadcast.emit('share',..  -> broadcasts drawing to other clients
+*/
+
 require('./config/server.config.js')
 
 const PORT = process.env.PORT;
@@ -8,12 +18,6 @@ const socketio = require('socket.io');
 
 const publicPath = path.join(__dirname, `../public`)
 const app = express();
-
-app.use(express.static(publicPath));
-
-app.get('*', function (req, res) {
-    res.sendFile(path.resolve(publicPath+'/index.html'));
-})
 
 var server = http.createServer(app);
 var io = socketio.listen(server);
@@ -52,6 +56,12 @@ io.on('connect', (socket) => {
       canvasHistory = {};
     }
   });
+})
+
+app.use(express.static(publicPath));
+
+app.get('*', function (req, res) {
+    res.sendFile(path.resolve(publicPath+'/index.html'));
 })
 
 server.listen(PORT, () => {
