@@ -1,18 +1,53 @@
 <!doctype html>
 <html>
   <head>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+
     <script src="socket.io/socket.io.js"></script>
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-aria/angular-aria.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-messages/angular-messages.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-material/angular-material.min.js"></script>
+
   </head>
   <body>
-    <h1>Testing Canvas</h1>
-    <div>
-      <input id="name" type="text"></input>
-      <button onclick="setName()">SET</button>
+    <div ng-app="whiteboard" ng-controller="settingsController">
+      <md-toolbar class="md-whiteframe-2dp">
+        <div class="md-toolbar-tools content reset">
+          <span class='special-text' >Virtual Whiteboard</span>
+          <span flex></span>
+          <md-radio-group ng-model="color" ng-init="color='#000000'" ng-change="setColor()" layout="row">
+            <md-radio-button value="#d32f2f"><span style="color:#d32f2f">Red</span></md-radio-button>
+            <md-radio-button value="#3949AB"><span style="color:#3949AB">Indigo</span></md-radio-button>
+            <md-radio-button value="#64B5F6"><span style="color:#64B5F6">Blue</span></md-radio-button>
+            <md-radio-button value="#FDD835"><span style="color:#FDD835">Yellow</span></md-radio-button>
+            <md-radio-button value="#4CAF50"><span style="color:#4CAF50">Green</span></md-radio-button>
+            <md-radio-button value="#000000"><span style="color:#757575">Black</span></md-radio-button>
+          </md-radio-group>
+          <span flex></span>
+          <md-input-container class="md-block" >
+            <label>Name</label>
+            <input required md-no-asterisk name="name" ng-model="name">
+          </md-input-container>
+          <md-input-container >
+            <md-button ng-disabled="!name.length" class="md-raised md-primary" ng-click="setName()">
+              <span ng-show="!showProgress">Set Name</span>
+              <md-progress-circular style="margin:auto" ng-show="showProgress" class="md-warn md-hue-2" md-diameter="20px"></md-progress-circular>
+            </md-button>
+          </md-input-container>
+        </div>
+      </md-toolbar>
     </div>
-    <div id="display">
-      <canvas id="canvas" width="600" height="600" style="border:1px solid #000000;cursor:pointer"></canvas>
+    <div id="display" >
+      <canvas id="canvas" width="800" height="600" style="border:1px solid #000000;cursor:crosshair"></canvas>
     </div>
+    <script src="./canvas.js"></script>
     <script src="./app.js"></script>
+    <script src="./controllers/app.controller.js"></script>
   </body>
 </html>

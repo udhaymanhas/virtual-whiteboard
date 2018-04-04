@@ -1,0 +1,21 @@
+#display{
+  text-align: center
+}
+.reset md-input-container .md-errors-spacer{
+  min-height: 0px !important;
+}
+.reset md-radio-group md-radio-button .md-label{
+  font-size: 12px !important;
+}
+
+md-toolbar:not(.md-menu-toolbar) {
+  background-color: rgb(33,33,33) !important;
+}
+
+md-input-container label {
+  color: rgba(189,189,189 ,1);
+}
+
+md-input-container .md-input {
+  color: #ffffff;
+}

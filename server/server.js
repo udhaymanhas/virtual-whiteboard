@@ -24,16 +24,16 @@ io.on('connect', (socket) => {
   console.log('-------History Length->',Object.keys(canvasHistory).length);
   console.log('Client Connection Success->',socket.id);
   clients.push(socket);
-  canvasHistory[socket.id] = []; // initialize client history
+  canvasHistory[socket.id] = {color:'',lines:[]}; // initialize client history
   console.log('-------History Length->',Object.keys(canvasHistory).length);
   Object.keys(canvasHistory).forEach(function(clientId) {
     var history = canvasHistory[clientId];
-    console.log(`History of client ${clientId} -> ${history.length}`);
-    if(history.length>0){
+    console.log(`History of client ${clientId} -> ${history.lines.length}`);
+    if(history.lines.length>0){
       console.log('sending History');
-      history.forEach(function(line, key){
-        // console.log(line);
-        socket.emit('history',line);
+      history.lines.forEach(function(line, key){
+        console.log(line);
+        socket.emit('history',{line:line, color:history.color});
       })
     }
   });
@@ -47,7 +47,8 @@ io.on('connect', (socket) => {
     // console.log(`data.points type`+typeof(data.points));
     // console.log(`data.points `,data.points);
     if(data.points != undefined){
-      canvasHistory[socket.id].push(data.points);
+      canvasHistory[socket.id].lines.push(data.points);
+      canvasHistory[socket.id].color = data.color;
       socket.broadcast.emit('share', data);
     }
     if(data.points == undefined && data.active == false){
