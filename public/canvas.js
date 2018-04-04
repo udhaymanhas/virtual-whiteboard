@@ -129,8 +129,8 @@ socket.on('connect',function(e){
 canvas.onmousedown = function(e){
   cursor.hold = true;
   canvas.onmousemove = function(e){
-    cursor.cur_pos.x = (e.clientX-$('#canvas').offset().left)/width;
-    cursor.cur_pos.y = (e.clientY-$('#canvas').offset().top)/height;
+    cursor.cur_pos.x = (e.clientX-$('#canvas').offset().left+window.scrollX)/width;
+    cursor.cur_pos.y = (e.clientY-$('#canvas').offset().top+window.scrollY)/height;
     cursor.move = true;
     setTimeout(collectPoints(cursor, color), 0);
   }
