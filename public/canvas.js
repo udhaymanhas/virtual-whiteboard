@@ -60,7 +60,6 @@ function resizeCanvas() {
   cnv.height = window.innerHeight-(0.2*window.innerHeight);
   width = cnv.width;
   height = cnv.height;
-  console.log('resizing');
   socket.emit('getHistory');
 }
 
