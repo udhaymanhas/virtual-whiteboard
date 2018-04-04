@@ -1,9 +1,11 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="socket.io/socket.io.js"></script>
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
@@ -15,18 +17,18 @@
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.min.js"></script>
 
   </head>
-  <body>
+  <body onload="resizeCanvas()">
     <!--Angular scope start -->
     <div ng-cloak ng-app="whiteboard" ng-controller="settingsController">
-      <md-toolbar class="md-whiteframe-2dp">
+      <md-toolbar class="toolbar md-whiteframe-2dp">
         <div class="md-toolbar-tools content reset">
           <span class='special-text' >Virtual Whiteboard</span>
           <span flex></span>
-          <md-button class="grey md-raised" onclick="emptyCanvas()">
+          <md-button hide-sm hide-xs class="grey md-raised" onclick="emptyCanvas()">
             Reset Canvas
           </md-button>
           <span flex></span>
-          <md-radio-group ng-model="color" ng-init="color='#000000'" ng-change="setColor()" layout="row">
+          <md-radio-group hide-sm hide-xs ng-model="color" ng-init="color='#000000'" ng-change="setColor()" layout="row">
             <md-radio-button value="#d32f2f"><span style="color:#d32f2f">Red</span></md-radio-button>
             <md-radio-button value="#3949AB"><span style="color:#3949AB">Indigo</span></md-radio-button>
             <md-radio-button value="#64B5F6"><span style="color:#64B5F6">Blue</span></md-radio-button>
@@ -35,21 +37,64 @@
             <md-radio-button value="#000000"><span style="color:#757575">Black</span></md-radio-button>
           </md-radio-group>
           <span flex></span>
-          <md-input-container class="md-block" >
+          <md-input-container hide-sm hide-xs class="md-block" >
             <label>Name</label>
             <input required md-no-asterisk name="name" ng-model="name">
           </md-input-container>
-          <md-input-container >
+          <md-input-container hide-sm hide-xs>
             <md-button ng-disabled="!name.length" class="md-raised md-primary" ng-click="setName()">
               <span ng-show="!showProgress">Set Name</span>
               <md-progress-circular style="margin:auto" ng-show="showProgress" class="md-warn md-hue-2" md-diameter="20px"></md-progress-circular>
             </md-button>
           </md-input-container>
+
+          <md-menu hide-gt-sm>
+            <md-button class="md-icon-button" aria-label="More" ng-click="$mdMenu.open()">
+              <i class="material-icons material-icon-auto">&#xE5D4;</i>
+            </md-button>
+            <md-menu-content width="4">
+              <md-list-item>
+                <md-button onclick="emptyCanvas()">
+                  Reset Canvas
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#d32f2f')">
+                  Set line <span style="color:#d32f2f">Red</span>
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#3949AB')">
+                  Set line <span style="color:#3949AB">Indigo</span>
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#64B5F6')">
+                  Set line <span style="color:#64B5F6">Blue</span>
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#FDD835')">
+                  Set line <span style="color:#FDD835">Yellow</span>
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#4CAF50')">
+                  Set line <span style="color:#4CAF50">Green</span>
+                </md-button>
+              </md-list-item>
+              <md-list-item>
+                <md-button onclick="setColorSm('#000000')">
+                  Set line <span style="color:#000000">Black</span>
+                </md-button>
+              </md-list-item>
+            </md-menu-content>
+          </md-menu>
         </div>
       </md-toolbar>
 
       <div id="display">
-        <canvas id="canvas" width="800" height="580" style="border:1px solid #212121;border-radius:3px;cursor:crosshair"></canvas>
+        <canvas id="canvas" style="margin-top:70px;border:1px solid #212121;border-radius:3px;cursor:crosshair"></canvas>
       </div>
     </div>
     <!--Angular scope end -->

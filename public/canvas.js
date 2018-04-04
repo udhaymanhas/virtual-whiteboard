@@ -23,10 +23,12 @@ var name = window.name;
 var color = window.color || 'black';
 var socket = io.connect();
 var canvas = document.getElementById("canvas");
-var canvasBound = canvas.getBoundingClientRect();
 var draw = canvas.getContext("2d");
+canvas.width = window.innerWidth-(0.1*window.innerWidth);
+canvas.height = window.innerHeight-(0.2*window.innerHeight);
 var width = canvas.width;
 var height = canvas.height;
+
 var users = [];
 
 var cursor = {
@@ -39,6 +41,27 @@ var cursor = {
 if(initial.scrollX > 0 || initial.scrollY > 0){
   scrollOffset.y =  initial.scrollY
   scrollOffset.x =  initial.scrollX
+}
+
+initialize();
+
+function initialize() {
+	window.addEventListener('resize', resizeCanvas, false);
+	resizeCanvas();
+}
+
+var setColorSm = function(color){
+  window.color = color;
+}
+
+function resizeCanvas() {
+  var cnv = document.getElementById("canvas");
+  cnv.width = window.innerWidth-(0.1*window.innerWidth);
+  cnv.height = window.innerHeight-(0.2*window.innerHeight);
+  width = cnv.width;
+  height = cnv.height;
+  console.log('resizing');
+  socket.emit('getHistory');
 }
 
 function addElement(socketId, name, points){
@@ -60,8 +83,8 @@ function updateCanvas(points){
   draw.lineWidth = 1;
   draw.lineJoin = 'round';
   draw.lineCap = 'round';
-  draw.moveTo(points[0].x * width , points[0].y * height );
-  draw.lineTo(points[1].x * width, points[1].y * height);
+  draw.moveTo((points[0].x*width), (points[0].y*height));
+  draw.lineTo((points[1].x*width), (points[1].y*height));
   draw.strokeStyle = points[2];
   draw.stroke();
 }
@@ -107,8 +130,8 @@ socket.on('connect',function(e){
 canvas.onmousedown = function(e){
   cursor.hold = true;
   canvas.onmousemove = function(e){
-    cursor.cur_pos.x = (e.clientX-canvasBound.left+window.scrollX-initial.scrollX) / width;
-    cursor.cur_pos.y = (e.clientY-canvasBound.top+window.scrollY-initial.scrollY) / height;
+    cursor.cur_pos.x = (e.clientX-$('#canvas').offset().left)/width;
+    cursor.cur_pos.y = (e.clientY-$('#canvas').offset().top)/height;
     cursor.move = true;
     setTimeout(collectPoints(cursor, color), 0);
   }
@@ -130,9 +153,8 @@ socket.on('share', function (data) {
       addElement(socket.id, data.name, points) // draw new users name
     }
     else{
-      //user present and active
-      var top = (points[0].y*height) + canvasBound.top + scrollOffset.y;
-      var left = (points[0].x*width) + canvasBound.left + scrollOffset.x;
+      var top = (points[0].y*height)+$('#canvas').offset().top ;
+      var left = (points[0].x*width)+$('#canvas').offset().left;
       $('#'+socket.id).css({top: top, left: left})
     }
     updateCanvas(data.points);

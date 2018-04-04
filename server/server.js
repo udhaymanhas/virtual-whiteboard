@@ -51,9 +51,22 @@ io.on('connect', (socket) => {
   });
 
   socket.on('resetCanvas', () => {
-    canvasHistory = {};
+    clients.forEach(function(client, index){
+      canvasHistory[client.id] = [];
+    })
     socket.broadcast.emit('clearCanvas');
   });
+
+  socket.on('getHistory', () => {
+    Object.keys(canvasHistory).forEach(function(clientId) {
+      var history = canvasHistory[clientId];
+      if(history.length>0){
+        history.forEach(function(line, key){
+          socket.emit('history',line);
+        })
+      }
+    });
+  })
 
   socket.on('disconnect', (socket) => {
     clients.splice(clients.indexOf(socket),1);
