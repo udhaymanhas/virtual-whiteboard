@@ -137,9 +137,9 @@ canvas.onmousedown = function(e){
   }
 }
 
-canvas.onmouseleave = function(e){
-  reset();
-}
+// canvas.onmouseleave = function(e){
+//   reset();
+// }
 
 canvas.onmouseup = function(e){
   reset();
