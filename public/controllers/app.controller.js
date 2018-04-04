@@ -24,7 +24,7 @@ app.controller('settingsController', ['$scope','$mdDialog', function($scope, $md
  };
 
  function DialogController($scope, $mdDialog) {
-    $scope.name = 'baba';
+    $scope.name = '';
     $scope.setName = function(){
       window.name = $scope.name;
       $mdDialog.hide();

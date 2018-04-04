@@ -132,7 +132,7 @@ canvas.onmousedown = function(e){
     cursor.cur_pos.x = (e.clientX-$('#canvas').offset().left)/width;
     cursor.cur_pos.y = (e.clientY-$('#canvas').offset().top)/height;
     cursor.move = true;
-    setTimeout(collectPoints(cursor, color), 0);
+    setTimeout(collectPoints(cursor, color), 30);
   }
 }
 
