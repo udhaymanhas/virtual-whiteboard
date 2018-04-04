@@ -79,7 +79,7 @@ function addElement(socketId, name, points){
 
 function updateCanvas(points){
   draw.beginPath();
-  draw.lineWidth = 1;
+  draw.lineWidth = 2.5;
   draw.lineJoin = 'round';
   draw.lineCap = 'round';
   draw.moveTo((points[0].x*width), (points[0].y*height));
@@ -132,11 +132,15 @@ canvas.onmousedown = function(e){
     cursor.cur_pos.x = (e.clientX-$('#canvas').offset().left)/width;
     cursor.cur_pos.y = (e.clientY-$('#canvas').offset().top)/height;
     cursor.move = true;
-    setTimeout(collectPoints(cursor, color), 30);
+    setTimeout(collectPoints(cursor, color), 0);
   }
 }
 
 canvas.onmouseup = function(e){
+  reset();
+};
+
+canvas.onmouseleave = function(e){
   reset();
 };
 
