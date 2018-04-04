@@ -77,13 +77,11 @@ function reset(){
     move: false,
     cur_pos: {x:0, y:0},
     prev_pos: false
-  }
-
+  };
   socket.emit('draw', {
     name: name,
     active: false
   });
-
   canvas.onmousemove = function(e){};
 }
 
