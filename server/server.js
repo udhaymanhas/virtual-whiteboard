@@ -51,7 +51,9 @@ io.on('connect', (socket) => {
   });
 
   socket.on('resetCanvas', () => {
+    canvasHistory = {};
     clients.forEach(function(client, index){
+      console.log(client.id);
       canvasHistory[client.id] = [];
     })
     socket.broadcast.emit('clearCanvas');
